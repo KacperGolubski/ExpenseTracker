@@ -2,7 +2,7 @@ package expenseTracker.domain;
 import java.time.LocalDate;
 
 
-public abstract class Expense {
+public class Expense {
     private String name;
     private String shopName;
     private LocalDate date;
@@ -23,7 +23,9 @@ public abstract class Expense {
         this.price = price;
         this.amount = amount;
         this.date = date;
+        this.expenseType = expenseType;
     }
+    public Expense(){}; // empty constructor for Jackson
 
     public String getName() {
         return name;
@@ -98,5 +100,7 @@ public abstract class Expense {
             throw new IllegalArgumentException("Podaj date");
         }
     }
+
+
 
 }
