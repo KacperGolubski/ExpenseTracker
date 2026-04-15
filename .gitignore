@@ -1,0 +1,23 @@
+# Build output
+target/
+build/
+bin/
+
+# IDE settings
+.idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+.factorypath
+.vscode/
+.nbproject/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
