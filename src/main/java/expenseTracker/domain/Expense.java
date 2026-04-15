@@ -4,14 +4,21 @@ import java.time.LocalDate;
 
 public abstract class Expense {
     private String name;
-    private String description;
-    private double price;
-    private int amount;
+    private String shopName;
     private LocalDate date;
+    private double price;
+    private String description = "";
+    private int amount;
     private ExpenseType expenseType;
 
-    public Expense(String name, String description, double price, int amount, LocalDate date, ExpenseType expenseType) {
+    public Expense(String name, String shopName, String description, double price, int amount, LocalDate date, ExpenseType expenseType) {
+        validateName(name);
+        validateShopName(shopName);
+        validateDate(date);
+        validateAmount(amount);
+        validatePrice(price);
         this.name = name;
+        this.shopName = shopName;
         this.description = description;
         this.price = price;
         this.amount = amount;
@@ -22,7 +29,15 @@ public abstract class Expense {
         return name;
     }
     public void setName(String name) {
+        validateName(name);
         this.name = name;
+    }
+    public String getShopName() {
+        return shopName;
+    }
+    public void setShopName(String shopName) {
+        validateShopName(shopName);
+        this.shopName = shopName;
     }
     public String getDescription() {
         return description;
@@ -33,16 +48,22 @@ public abstract class Expense {
     public double getPrice() {
         return price;
     }
+    public void setPrice(double price) {
+        validatePrice(price);
+        this.price = price;
+    }
     public LocalDate getDate() {
         return date;
     }
     public void setDate(LocalDate date) {
+        validateDate(date);
         this.date = date;
     }
     public int getAmount() {
         return amount;
     }
     public void setAmount(int amount) {
+        validateAmount(amount);
         this.amount = amount;
     }
     public ExpenseType getExpenseType() {
@@ -52,12 +73,30 @@ public abstract class Expense {
         this.expenseType = expenseType;
     }
 
-    private void
-    private void validateExpenseType(ExpenseType expenseType) {
-        if (expenseType == null) {
-            throw new IllegalArgumentException("Typ wydatku nie może być pusty");
+    private void validateName(String name){
+        if(name == null || name.isEmpty()){
+            throw new IllegalArgumentException("Nazwa nie może być pusta");
         }
     }
-
+    private void validateShopName(String shopName){
+        if(shopName == null || shopName.isEmpty()){
+            throw new IllegalArgumentException("Podaj nazwę sklepu");
+        }
+    }
+    private void validatePrice(double price){
+        if(price <=0){
+            throw new IllegalArgumentException("Kwota musi być większa od 0");
+        }
+    }
+    private void validateAmount(int amount){
+        if(amount <=0){
+            throw new IllegalArgumentException("Liczba musi być większa od 0");
+        }
+    }
+    private void validateDate(LocalDate date){
+        if(date == null){
+            throw new IllegalArgumentException("Podaj date");
+        }
+    }
 
 }
