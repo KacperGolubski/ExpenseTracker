@@ -1,8 +1,10 @@
 package expenseTracker.domain;
 import java.time.LocalDate;
+import java.util.UUID;
 
 
 public class Expense {
+    private String id;
     private String name;
     private String shopName;
     private LocalDate date;
@@ -17,6 +19,7 @@ public class Expense {
         validateDate(date);
         validateAmount(amount);
         validatePrice(price);
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.shopName = shopName;
         this.description = description;
