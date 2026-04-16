@@ -77,6 +77,12 @@ public class Expense {
     public void setExpenseType(ExpenseType expenseType) {
         this.expenseType = expenseType;
     }
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
 
     private void validateName(String name){
         if(name == null || name.isEmpty()){
