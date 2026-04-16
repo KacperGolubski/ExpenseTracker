@@ -21,7 +21,7 @@ public class FileExpenseRepository {
         }
         return new ArrayList<>();
     }
-    public void saveExpense(List <Expense> expenses) {
+    public void saveExpenses(List <Expense> expenses) {
         try{
             objectMapper.writeValue(file, expenses);
         } catch(IOException e){
