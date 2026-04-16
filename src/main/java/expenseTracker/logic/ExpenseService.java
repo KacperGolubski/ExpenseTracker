@@ -13,9 +13,50 @@ public class ExpenseService {
         this.expenses = repository.loadExpenses();
     }
 
-    public void addExpense(Expense expense){
+    public boolean addExpense(Expense expense){
+        if(expense == null){
+            return false;
+        }
         expenses.add(expense);
         repository.saveExpenses(expenses);
+        return true;
+    }
+
+    public Expense getExpenseById(String id){
+        for(Expense expenseById : expenses){
+            if(expenseById.getId().equals(id)){
+                return expenseById;
+            }
+        } return null;
+    }
+
+    public boolean deleteExpense(String id){
+        Expense expenseToDelete = getExpenseById(id);
+        if(expenseToDelete == null){
+            return false;
+        }
+        expenses.remove(expenseToDelete);
+        repository.saveExpenses(expenses);
+        return true;
+    }
+
+    public boolean updateExpense(String id, Expense updateData){
+        Expense existingExpense = getExpenseById(id);
+        if(existingExpense == null){
+            return false;
+        }
+        existingExpense.setName(updateData.getName());
+        existingExpense.setDescription(updateData.getDescription());
+        existingExpense.setAmount(updateData.getAmount());
+        existingExpense.setDate(updateData.getDate());
+        existingExpense.setExpenseType(updateData.getExpenseType());
+        existingExpense.setPrice(updateData.getPrice());
+        repository.saveExpenses(expenses);
+        return true;
+    }
+
+    public List<Expense> getExpenses(){
+        return expenses;
     }
 
 
