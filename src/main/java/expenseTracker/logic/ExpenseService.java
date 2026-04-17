@@ -46,8 +46,8 @@ public class ExpenseService {
             return false;
         }
         existingExpense.setName(updateData.getName());
+        existingExpense.setShopName(updateData.getShopName());
         existingExpense.setDescription(updateData.getDescription());
-        existingExpense.setAmount(updateData.getAmount());
         existingExpense.setDate(updateData.getDate());
         existingExpense.setExpenseType(updateData.getExpenseType());
         existingExpense.setPrice(updateData.getPrice());

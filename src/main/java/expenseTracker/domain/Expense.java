@@ -10,21 +10,18 @@ public class Expense {
     private LocalDate date;
     private double price;
     private String description = "";
-    private int amount;
     private ExpenseType expenseType;
 
-    public Expense(String name, String shopName, String description, double price, int amount, LocalDate date, ExpenseType expenseType) {
+    public Expense(String name, String shopName, String description, double price, LocalDate date, ExpenseType expenseType) {
         validateName(name);
-        validateShopName(shopName);
+        validateName(shopName);
         validateDate(date);
-        validateAmount(amount);
         validatePrice(price);
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.shopName = shopName;
         this.description = description;
         this.price = price;
-        this.amount = amount;
         this.date = date;
         this.expenseType = expenseType;
     }
@@ -41,7 +38,7 @@ public class Expense {
         return shopName;
     }
     public void setShopName(String shopName) {
-        validateShopName(shopName);
+        validateName(shopName);
         this.shopName = shopName;
     }
     public String getDescription() {
@@ -64,13 +61,6 @@ public class Expense {
         validateDate(date);
         this.date = date;
     }
-    public int getAmount() {
-        return amount;
-    }
-    public void setAmount(int amount) {
-        validateAmount(amount);
-        this.amount = amount;
-    }
     public ExpenseType getExpenseType() {
         return expenseType;
     }
@@ -89,24 +79,14 @@ public class Expense {
             throw new IllegalArgumentException("Nazwa nie może być pusta");
         }
     }
-    private void validateShopName(String shopName){
-        if(shopName == null || shopName.isEmpty()){
-            throw new IllegalArgumentException("Podaj nazwę sklepu");
-        }
-    }
     private void validatePrice(double price){
         if(price <=0){
             throw new IllegalArgumentException("Kwota musi być większa od 0");
         }
     }
-    private void validateAmount(int amount){
-        if(amount <=0){
-            throw new IllegalArgumentException("Liczba musi być większa od 0");
-        }
-    }
     private void validateDate(LocalDate date){
         if(date == null){
-            throw new IllegalArgumentException("Podaj date");
+            throw new IllegalArgumentException("Data nie może być pusta");
         }
     }
 
