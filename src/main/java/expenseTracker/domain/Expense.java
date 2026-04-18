@@ -1,5 +1,6 @@
 package expenseTracker.domain;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -90,6 +91,26 @@ public class Expense {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Expense expense = (Expense) o;
+
+        return Double.compare(expense.price, price) == 0 &&
+                Objects.equals(id, expense.id) &&
+                Objects.equals(name, expense.name) &&
+                Objects.equals(shopName, expense.shopName) &&
+                Objects.equals(description, expense.description) &&
+                Objects.equals(date, expense.date) &&
+                expenseType == expense.expenseType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, shopName, description, price, date, expenseType);
+    }
 
 
 }
