@@ -17,7 +17,7 @@ import java.util.IllegalFormatException;
 
 public class ExpenseTest {
 
-    public Expense TestExpense;
+    private Expense TestExpense;
 
     @BeforeEach
     public void setup() {
