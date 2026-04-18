@@ -31,5 +31,6 @@ public class FileExpenseRepository {
     public FileExpenseRepository(String filePath){
         this.file = new File(filePath);
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
     }
 }
