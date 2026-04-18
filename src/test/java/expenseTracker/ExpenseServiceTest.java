@@ -2,6 +2,7 @@ package expenseTracker;
 import expenseTracker.domain.ExpenseType;
 import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import expenseTracker.domain.Expense;
 import expenseTracker.domain.ExpenseType;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.IllegalFormatException;
@@ -24,6 +28,15 @@ public class ExpenseServiceTest {
         expenses = new ExpenseService(fileRepository);
         testExpense = new Expense("Paliwo", "BP", "Cena za litr 5.19zł", 200, LocalDate.parse("2026-04-20"), ExpenseType.FUEL);
 
+    }
+
+    @AfterEach
+    public void tearDown() {
+        try {
+            Files.deleteIfExists(Paths.get("test_expenses.json"));
+        } catch (IOException e) {
+            System.err.println("Nie udało się usunąć pliku testowego: " + e.getMessage());
+        }
     }
 
     @Test
