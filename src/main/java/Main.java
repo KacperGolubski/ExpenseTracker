@@ -3,6 +3,7 @@ import expenseTracker.domain.ExpenseType;
 import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 
@@ -49,19 +50,12 @@ public class Main {
     }
     public static void addExpenseMain(){
         Expense expense = null;
-        System.out.println("Enter expense name");
-        String name = scanner.nextLine();
-        System.out.println("Enter expense shop name");
-        String shopName = scanner.nextLine();
-        System.out.println("Enter expense description");
-        String description = scanner.nextLine();
-        System.out.println("Enter expense price");
-        double price = scanner.nextDouble();
-        scanner.nextLine();
-        System.out.println("Enter expense date in format YYYY-MM-DD");
-        LocalDate date = LocalDate.parse(scanner.nextLine());
-        System.out.println("Enter expense type");
-        ExpenseType type = ExpenseType.valueOf(scanner.nextLine().toUpperCase());
+        String name = getStringInput("Enter expense name");
+        String shopName =  getStringInput("Enter shop name");
+        String description = getStringInput("Enter description (You can leave it empty");
+        double price = getDoubleInput("Enter price");
+        LocalDate date = getLocalDateInput("Enter expense date in format YYYY-MM-DD");
+        ExpenseType type = getExpenseTypeInput("Enter correct expense type from the list");
         try{
             expense = new Expense(name, shopName, description, price, date, type);
         } catch(IllegalArgumentException e){
@@ -70,8 +64,44 @@ public class Main {
         }
         if(expenseService.addExpense(expense)){
             System.out.println("Expense added successfully");
+            return;
         } else  {
             System.out.println("Expense could not be added");
+            return;
+        }
+    }
+    public static String getStringInput(String message){
+        System.out.println(message);
+        return scanner.nextLine();
+    }
+
+    public static double getDoubleInput(String message){
+        System.out.println(message);
+        return Double.parseDouble(scanner.nextLine());
+    }
+
+    public static LocalDate getLocalDateInput(String message){
+        System.out.println(message);
+        while(true) {
+            try {
+                return LocalDate.parse(scanner.nextLine());
+            }  catch (DateTimeParseException e) {
+                System.out.println("Invalid date format! Please try again");
+            }
+        }
+    }
+
+    public static ExpenseType getExpenseTypeInput(String message){
+        System.out.println(message);
+        for(ExpenseType type : ExpenseType.values()){
+            System.out.println(type);
+        }
+        while(true) {
+            try {
+                return ExpenseType.valueOf(scanner.nextLine().toUpperCase());
+            } catch(IllegalArgumentException e) {
+                System.out.println("Invalid type of expense type! Please try again");
+            }
         }
     }
 }
