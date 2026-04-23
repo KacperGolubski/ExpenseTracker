@@ -1,7 +1,11 @@
 package expenseTracker.logic;
 
 import expenseTracker.domain.Expense;
+import expenseTracker.domain.ExpenseType;
 import expenseTracker.logic.FileExpenseRepository;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseService {
@@ -59,5 +63,64 @@ public class ExpenseService {
         return expenses;
     }
 
+    public List<Expense> filterExpensesByShopName(List<Expense> inputList, String shopName) {
+        List<Expense> filteredExpenses = inputList;
+        if (shopName != null && !shopName.isEmpty()) {
+            List<Expense> temp = new ArrayList<>();
+            for (Expense expense : filteredExpenses) {
+                if (expense.getShopName().equals(shopName)) {
+                    temp.add(expense);
+                }
+            }
+            filteredExpenses = temp;
+        }
+        return filteredExpenses;
+    }
 
+    public List<Expense> filterExpenseByType(List<Expense> inputList, ExpenseType expenseType) {
+        List<Expense> filteredExpenses = inputList;
+        if (expenseType != null) {
+            List<Expense> temp = new ArrayList<>();
+            for (Expense expense : filteredExpenses) {
+                if (expense.getExpenseType().equals(expenseType)) {
+                    temp.add(expense);
+                }
+            }
+            filteredExpenses = temp;
+        }
+        return filteredExpenses;
+    }
+
+    public List<Expense> filterExpensesByDates(List<Expense> inputList, LocalDate dateFrom, LocalDate dateTo) {
+        List<Expense> filteredExpenses = inputList;
+        if (dateFrom != null) {
+            List<Expense> temp = new ArrayList<>();
+            for (Expense expense : filteredExpenses) {
+                if (expense.getDate().isAfter(dateFrom)) {
+                    temp.add(expense);
+                }
+            }
+            filteredExpenses = temp;
+        }
+
+        if (dateTo != null) {
+            List<Expense> temp = new ArrayList<>();
+            for (Expense expense : filteredExpenses) {
+                if (expense.getDate().isBefore(dateTo)) {
+                    temp.add(expense);
+                }
+            }
+            filteredExpenses = temp;
+        }
+        return filteredExpenses;
+    }
+
+    public List<Expense> filterByShopNameDatesType(String shopName, LocalDate dateFrom, LocalDate dateTo, ExpenseType expenseType) {
+        List<Expense> result = new ArrayList<>(expenses);
+        result = filterExpensesByShopName(result,shopName);
+        result = filterExpensesByDates(result,dateFrom,dateTo);
+        result = filterExpenseByType(result,expenseType);
+        return result;
+    }
 }
+

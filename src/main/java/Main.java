@@ -48,28 +48,6 @@ public class Main {
             }
         } scanner.close();
     }
-    public static void addExpenseMain(){
-        Expense expense = null;
-        String name = getStringInput("Enter expense name");
-        String shopName =  getStringInput("Enter shop name");
-        String description = getStringInput("Enter description (You can leave it empty");
-        double price = getDoubleInput("Enter price");
-        LocalDate date = getLocalDateInput("Enter expense date in format YYYY-MM-DD");
-        ExpenseType type = getExpenseTypeInput("Enter correct expense type from the list");
-        try{
-            expense = new Expense(name, shopName, description, price, date, type);
-        } catch(IllegalArgumentException e){
-            System.out.println(e.getMessage());
-            return;
-        }
-        if(expenseService.addExpense(expense)){
-            System.out.println("Expense added successfully");
-            return;
-        } else  {
-            System.out.println("Expense could not be added");
-            return;
-        }
-    }
     public static String getStringInput(String message){
         System.out.println(message);
         return scanner.nextLine();
@@ -94,7 +72,7 @@ public class Main {
     public static ExpenseType getExpenseTypeInput(String message){
         System.out.println(message);
         for(ExpenseType type : ExpenseType.values()){
-            System.out.println(type);
+            System.out.print(type + " ");
         }
         while(true) {
             try {
@@ -104,4 +82,38 @@ public class Main {
             }
         }
     }
+
+    public static void addExpenseMain(){
+        Expense expense = null;
+        String name = getStringInput("Enter expense name: ");
+        String shopName =  getStringInput("Enter shop name");
+        String description = getStringInput("Enter description (You can leave it empty): ");
+        double price = getDoubleInput("Enter price: ");
+        LocalDate date = getLocalDateInput("Enter expense date in format YYYY-MM-DD: ");
+        ExpenseType type = getExpenseTypeInput("Enter correct expense type from the list: ");
+        try{
+            expense = new Expense(name, shopName, description, price, date, type);
+        } catch(IllegalArgumentException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+        if(expenseService.addExpense(expense)){
+            System.out.println("Expense added successfully");
+            return;
+        } else  {
+            System.out.println("Expense could not be added");
+            return;
+        }
+    }
+
+//    public static void updateExpenseMain(){
+//       String shopName = getStringInput("Provide shop name: ");
+//        ExpenseType expenseType = getExpenseTypeInput("Provide expense type: ");
+//        LocalDate dateFrom = getLocalDateInput("Provide from date: ");
+//        LocalDate dateTo = getLocalDateInput("Provide to date: ");
+//    }
+
+
+
+
 }
