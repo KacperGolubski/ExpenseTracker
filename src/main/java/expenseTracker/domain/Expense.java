@@ -90,7 +90,6 @@ public class Expense {
             throw new IllegalArgumentException("Data nie może być pusta");
         }
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

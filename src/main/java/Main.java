@@ -4,6 +4,9 @@ import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -32,6 +35,7 @@ public class Main {
                     break;
                 case "3":
                     System.out.println("Update expense");
+                    updateExpenseMain();
                     break;
                 case "4":
                     System.out.println("Delete expense");
@@ -51,6 +55,11 @@ public class Main {
     public static String getStringInput(String message){
         System.out.println(message);
         return scanner.nextLine();
+    }
+
+    public static int getIntInput(String message){
+        System.out.println(message);
+        return scanner.nextInt();
     }
 
     public static double getDoubleInput(String message){
@@ -84,19 +93,7 @@ public class Main {
     }
 
     public static void addExpenseMain(){
-        Expense expense = null;
-        String name = getStringInput("Enter expense name: ");
-        String shopName =  getStringInput("Enter shop name");
-        String description = getStringInput("Enter description (You can leave it empty): ");
-        double price = getDoubleInput("Enter price: ");
-        LocalDate date = getLocalDateInput("Enter expense date in format YYYY-MM-DD: ");
-        ExpenseType type = getExpenseTypeInput("Enter correct expense type from the list: ");
-        try{
-            expense = new Expense(name, shopName, description, price, date, type);
-        } catch(IllegalArgumentException e){
-            System.out.println(e.getMessage());
-            return;
-        }
+        Expense expense = createExpense();
         if(expenseService.addExpense(expense)){
             System.out.println("Expense added successfully");
             return;
@@ -106,14 +103,73 @@ public class Main {
         }
     }
 
-//    public static void updateExpenseMain(){
-//       String shopName = getStringInput("Provide shop name: ");
-//        ExpenseType expenseType = getExpenseTypeInput("Provide expense type: ");
-//        LocalDate dateFrom = getLocalDateInput("Provide from date: ");
-//        LocalDate dateTo = getLocalDateInput("Provide to date: ");
-//    }
+    public static void updateExpenseMain(){
+        Expense expenseToBeUpdated = null;
+        String shopName = getStringInput("Provide shop name: ");
+        ExpenseType expenseType = getExpenseTypeInput("Provide expense type: ");
+        LocalDate dateFrom = getLocalDateInput("Provide from date: ");
+        LocalDate dateTo = getLocalDateInput("Provide to date: ");
+        List<Expense> filteredExpenses = expenseService.filterByShopNameDatesType(shopName, dateFrom, dateTo, expenseType);
+        if(filteredExpenses.isEmpty()){
+            System.out.println("No expense match the criteria");
+            return;
+        }
+        HashMap<Integer, Expense> indexedExpensesMap = indexExpenses(filteredExpenses);
+        printExpenseMap(indexedExpensesMap);
+        while(true){
+            int input = getIntInput("Select expense ID: ");
+            if(indexedExpensesMap.containsKey(input)){
+                expenseToBeUpdated = indexedExpensesMap.get(input);
+                break;
+            } else {
+                System.out.println("Invalid input! Please try again");
+            }
+        }
+        System.out.println("Now provide new details for this expense");
+        Expense expenseUpdate = createExpense();
+        if(expenseService.updateExpense(expenseToBeUpdated.getId(),  expenseUpdate)){
+            System.out.println("Expense updated successfully");
+        } else  {
+            System.out.println("Expense could not be updated");
+        }
 
 
 
+    }
+
+
+    public static HashMap<Integer, Expense> indexExpenses(List<Expense> expenses){
+        HashMap<Integer, Expense> expensesMap = new HashMap<>();
+        int index = 1;
+        for(Expense expense : expenses){
+            expensesMap.put(index, expense);
+            index++;
+        } return expensesMap;
+    }
+
+    public static void printExpenseMap(HashMap<Integer, Expense> expensesMap){
+        for (Map.Entry<Integer, Expense> entry : expensesMap.entrySet()) {
+            System.out.printf("[%d] %s%n", entry.getKey(), entry.getValue());
+        }
+    }
+
+    public static Expense createExpense(){
+        Expense expense = null;
+        while(true){
+            String name = getStringInput("Enter expense name: ");
+            String shopName =  getStringInput("Enter shop name");
+            String description = getStringInput("Enter description (You can leave it empty): ");
+            double price = getDoubleInput("Enter price: ");
+            LocalDate date = getLocalDateInput("Enter expense date in format YYYY-MM-DD: ");
+            ExpenseType type = getExpenseTypeInput("Enter correct expense type from the list: ");
+            try{
+                expense = new Expense(name, shopName, description, price, date, type);
+                break;
+            } catch(IllegalArgumentException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return expense;
+    }
 
 }
