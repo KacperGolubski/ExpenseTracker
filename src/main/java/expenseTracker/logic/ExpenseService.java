@@ -63,6 +63,20 @@ public class ExpenseService {
         return expenses;
     }
 
+    public List<Expense> filterExpenseByName(List<Expense> inputList, String name){
+        List<Expense> filteredExpenses = inputList;
+        if(name != null && !name.isEmpty()){
+            List<Expense> temp = new ArrayList<>();
+            for (Expense expense : filteredExpenses) {
+                if (expense.getName().equals(name)) {
+                    temp.add(expense);
+                }
+            }
+            filteredExpenses = temp;
+        }
+        return filteredExpenses;
+    }
+
     public List<Expense> filterExpensesByShopName(List<Expense> inputList, String shopName) {
         List<Expense> filteredExpenses = inputList;
         if (shopName != null && !shopName.isEmpty()) {
@@ -115,8 +129,9 @@ public class ExpenseService {
         return filteredExpenses;
     }
 
-    public List<Expense> filterByShopNameDatesType(String shopName, LocalDate dateFrom, LocalDate dateTo, ExpenseType expenseType) {
+    public List<Expense> filterByShopNameDatesType(String name, String shopName, LocalDate dateFrom, LocalDate dateTo, ExpenseType expenseType) {
         List<Expense> result = new ArrayList<>(expenses);
+        result = filterExpensesByShopName(result, shopName);
         result = filterExpensesByShopName(result,shopName);
         result = filterExpensesByDates(result,dateFrom,dateTo);
         result = filterExpenseByType(result,expenseType);

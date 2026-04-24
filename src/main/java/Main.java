@@ -164,11 +164,12 @@ public class Main {
 
     public static Expense findAndReturnExpense(){
         Expense expense = null;
+        String name = getStringInput("Enter expense name: ");
         String shopName = getStringInput("Provide shop name: ");
         ExpenseType expenseType = getExpenseTypeInput("Provide expense type: ");
         LocalDate dateFrom = getLocalDateInput("Provide from date: ");
         LocalDate dateTo = getLocalDateInput("Provide to date: ");
-        List<Expense> filteredExpenses = expenseService.filterByShopNameDatesType(shopName, dateFrom, dateTo, expenseType);
+        List<Expense> filteredExpenses = expenseService.filterByShopNameDatesType(name, shopName, dateFrom, dateTo, expenseType);
         if(filteredExpenses.isEmpty()){
             System.out.println("No expense match the criteria");
             return null;
