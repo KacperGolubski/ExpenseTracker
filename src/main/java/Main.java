@@ -18,29 +18,27 @@ public class Main {
         boolean isRunnig = true;
         while (isRunnig) {
             System.out.println("\n--- MAIN MENU ---\n");
-            System.out.println("1. Filter expenses");
-            System.out.println("2. Add expenses");
-            System.out.println("3. Update expenses");
-            System.out.println("4. Delete expenses");
-            System.out.println("5. Generate report");
+            System.out.println("1. Add expenses");
+            System.out.println("2. Update expenses");
+            System.out.println("3. Delete expenses");
+            System.out.println("4. Generate report");
             System.out.println("0. Exit program");
             System.out.println("Enter your choice: ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    System.out.println("Provide expense ID");
-                case "2":
                     System.out.println("Provide expense details");
                     addExpenseMain();
                     break;
-                case "3":
+                case "2":
                     System.out.println("Update expense");
                     updateExpenseMain();
                     break;
-                case "4":
+                case "3":
                     System.out.println("Delete expense");
+                    deleteExpenseMain();
                     break;
-                case "5":
+                case "4":
                     System.out.println("Select type of report");
                     break;
                 case "0":
@@ -104,26 +102,9 @@ public class Main {
     }
 
     public static void updateExpenseMain(){
-        Expense expenseToBeUpdated = null;
-        String shopName = getStringInput("Provide shop name: ");
-        ExpenseType expenseType = getExpenseTypeInput("Provide expense type: ");
-        LocalDate dateFrom = getLocalDateInput("Provide from date: ");
-        LocalDate dateTo = getLocalDateInput("Provide to date: ");
-        List<Expense> filteredExpenses = expenseService.filterByShopNameDatesType(shopName, dateFrom, dateTo, expenseType);
-        if(filteredExpenses.isEmpty()){
-            System.out.println("No expense match the criteria");
+        Expense expenseToBeUpdated = findAndReturnExpense();
+        if(expenseToBeUpdated == null){
             return;
-        }
-        HashMap<Integer, Expense> indexedExpensesMap = indexExpenses(filteredExpenses);
-        printExpenseMap(indexedExpensesMap);
-        while(true){
-            int input = getIntInput("Select expense ID: ");
-            if(indexedExpensesMap.containsKey(input)){
-                expenseToBeUpdated = indexedExpensesMap.get(input);
-                break;
-            } else {
-                System.out.println("Invalid input! Please try again");
-            }
         }
         System.out.println("Now provide new details for this expense");
         Expense expenseUpdate = createExpense();
@@ -132,9 +113,18 @@ public class Main {
         } else  {
             System.out.println("Expense could not be updated");
         }
+    }
 
-
-
+    public static void deleteExpenseMain(){
+        Expense expenseToBeDeleted = findAndReturnExpense();
+        if(expenseToBeDeleted == null){
+            return;
+        }
+        if(expenseService.deleteExpense(expenseToBeDeleted.getId())){
+            System.out.println("Expense deleted successfully");
+        } else  {
+            System.out.println("Expense could not be deleted");
+        }
     }
 
 
@@ -167,6 +157,31 @@ public class Main {
                 break;
             } catch(IllegalArgumentException e){
                 System.out.println(e.getMessage());
+            }
+        }
+        return expense;
+    }
+
+    public static Expense findAndReturnExpense(){
+        Expense expense = null;
+        String shopName = getStringInput("Provide shop name: ");
+        ExpenseType expenseType = getExpenseTypeInput("Provide expense type: ");
+        LocalDate dateFrom = getLocalDateInput("Provide from date: ");
+        LocalDate dateTo = getLocalDateInput("Provide to date: ");
+        List<Expense> filteredExpenses = expenseService.filterByShopNameDatesType(shopName, dateFrom, dateTo, expenseType);
+        if(filteredExpenses.isEmpty()){
+            System.out.println("No expense match the criteria");
+            return null;
+        }
+        HashMap<Integer, Expense> indexedExpensesMap = indexExpenses(filteredExpenses);
+        printExpenseMap(indexedExpensesMap);
+        while(true){
+            int input = getIntInput("Select expense ID: ");
+            if(indexedExpensesMap.containsKey(input)){
+                expense = indexedExpensesMap.get(input);
+                break;
+            } else {
+                System.out.println("Invalid input! Please try again");
             }
         }
         return expense;
