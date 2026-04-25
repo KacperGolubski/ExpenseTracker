@@ -110,6 +110,15 @@ public class Expense {
     public int hashCode() {
         return Objects.hash(id, name, shopName, description, price, date, expenseType);
     }
+    @Override
+    public String toString() {
+        return String.format("%s | %-15s | %-15s | %8.2f | [%s]",
+                date,
+                name,
+                shopName,
+                price,
+                expenseType);
+    }
 
 
 }
