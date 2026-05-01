@@ -14,9 +14,17 @@ import java.util.Scanner;
 public class Console {
 
     static Scanner scanner = new Scanner(System.in);
+
+    public static void setScanner(Scanner testScanner) {
+        scanner = testScanner;
+    }
     public static String getStringInput(String message){
         System.out.println(message);
-        return scanner.nextLine();
+        String input = scanner.nextLine();
+        if(input.isEmpty()){
+            return null;
+        }
+        return input;
     }
 
     public static int getIntInput(String message){
@@ -46,6 +54,9 @@ public class Console {
 
     public static ExpenseType getExpenseTypeInput(String message){
         System.out.println(message);
+        for(ExpenseType expenseType : ExpenseType.values()){
+            System.out.println(expenseType);
+        }
         while(true) {
             String input = scanner.nextLine();
             if(input.isEmpty()){
@@ -116,10 +127,10 @@ public class Console {
     public static List<Expense> findListOfExpenses(ExpenseService expenseService){
         String name = getStringInput("Enter expense name: ");
         String shopName = getStringInput("Provide shop name: ");
-        ExpenseType expenseType = getExpenseTypeInput("Provide expense type: ");
         LocalDate dateFrom = getLocalDateInput("Provide from date: ");
         LocalDate dateTo = getLocalDateInput("Provide to date: ");
-        List<Expense> filteredExpenses = expenseService.filterByShopNameDatesType(name, shopName, dateFrom, dateTo, expenseType);
+        ExpenseType expenseType = getExpenseTypeInput("Provide expense type: ");
+        List<Expense> filteredExpenses = expenseService.filterByNameShopNameDatesType(name, shopName, dateFrom, dateTo, expenseType);
         if(filteredExpenses.isEmpty()){
             System.out.println("No expense match the criteria");
             return null;

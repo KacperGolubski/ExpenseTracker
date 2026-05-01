@@ -2,7 +2,6 @@ package expenseTracker.logic;
 
 import expenseTracker.domain.Expense;
 import expenseTracker.domain.ExpenseType;
-import expenseTracker.logic.FileExpenseRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -115,9 +114,9 @@ public class ExpenseService {
         return filteredExpenses;
     }
 
-    public List<Expense> filterByShopNameDatesType(String name, String shopName, LocalDate dateFrom, LocalDate dateTo, ExpenseType expenseType) {
+    public List<Expense> filterByNameShopNameDatesType(String name, String shopName, LocalDate dateFrom, LocalDate dateTo, ExpenseType expenseType) {
         List<Expense> result = new ArrayList<>(expenses);
-        result = filterExpensesByName(result, shopName);
+        result = filterExpensesByName(result,name);
         result = filterExpensesByName(result,shopName);
         result = filterExpensesByDates(result,dateFrom,dateTo);
         result = filterExpenseByType(result,expenseType);

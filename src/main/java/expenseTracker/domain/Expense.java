@@ -16,16 +16,18 @@ public class Expense {
     public Expense(String name, String shopName, String description, double price, LocalDate date, ExpenseType expenseType) {
         validateName(name);
         validateName(shopName);
-        validateDate(date);
         validatePrice(price);
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.shopName = shopName;
         this.description = description;
         this.price = price;
-        this.date = date;
+        if(date == null){
+            this.date = LocalDate.now();
+        } else this.date = date;
         this.expenseType = expenseType;
     }
+
     public Expense(){}; // empty constructor for Jackson
 
     public String getName() {
@@ -59,7 +61,6 @@ public class Expense {
         return date;
     }
     public void setDate(LocalDate date) {
-        validateDate(date);
         this.date = date;
     }
     public ExpenseType getExpenseType() {
@@ -85,11 +86,6 @@ public class Expense {
             throw new IllegalArgumentException("Kwota musi być większa od 0");
         }
     }
-    private void validateDate(LocalDate date){
-        if(date == null){
-            throw new IllegalArgumentException("Data nie może być pusta");
-        }
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,10 +108,11 @@ public class Expense {
     }
     @Override
     public String toString() {
-        return String.format("%s | %-15s | %-15s | %8.2f | [%s]",
+        return String.format("%s | %-15s | %-15s | %-30s | %8.2f | [%s]",
                 date,
                 name,
                 shopName,
+                description,
                 price,
                 expenseType);
     }
