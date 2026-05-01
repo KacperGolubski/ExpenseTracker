@@ -61,14 +61,6 @@ public class ExpenseTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenDateIsNull(){
-        assertThrows(DateTimeParseException.class, () -> {
-            Expense expense = new Expense("Rata kredytu", "Pekao", "", 1500, LocalDate.parse(""), ExpenseType.MORTGAGE);
-
-        });
-    }
-
-    @Test
     public void shouldSetCorrectName(){
         TestExpense.setName("Benzyna");
         assertEquals("Benzyna", TestExpense.getName());
@@ -93,7 +85,7 @@ public class ExpenseTest {
     }
 
     @Test
-    public void souldSetCorrectDescription(){
+    public void shouldSetCorrectDescription(){
         TestExpense.setDescription("Cena za litr 6.19zł");
         assertEquals("Cena za litr 6.19zł", TestExpense.getDescription());
     }

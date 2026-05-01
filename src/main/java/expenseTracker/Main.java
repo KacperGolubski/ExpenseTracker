@@ -1,3 +1,5 @@
+package expenseTracker;
+
 import expenseTracker.domain.Expense;
 import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
@@ -13,6 +15,13 @@ public class Main {
     static FileExpenseRepository fileRepository = new FileExpenseRepository("expenses.json");
     static ExpenseService expenseService = new ExpenseService(fileRepository);
     static Scanner scanner = new Scanner(System.in);
+    public static void setScanner(Scanner testScanner) {
+        scanner = testScanner;
+    }
+
+    public static void setExpenseService(ExpenseService testService) {
+        expenseService = testService;
+    }
     public static void main(String[] args) {
         boolean isRunnig = true;
         while (isRunnig) {
