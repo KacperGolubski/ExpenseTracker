@@ -3,6 +3,7 @@ import expenseTracker.domain.ExpenseType;
 import expenseTracker.logic.Console;
 import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
+import expenseTracker.logic.InputReader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ public class CRUD {
     public void shouldCreateExpense() {
         inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         testScanner = new Scanner(inputStream);
-        Console.setScanner(testScanner);
+        InputReader.setScanner(testScanner);
         Expense expense = Console.createExpense();
         assertNotNull(expense);
     }
@@ -57,7 +58,7 @@ public class CRUD {
         simulatedInput = "Rata za kredyt\n" +"PEAKO\n" + "\n" + "1700\n" + "\n" + "MORTGAGE\n";
         inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         testScanner = new Scanner(inputStream);
-        Console.setScanner(testScanner);
+        InputReader.setScanner(testScanner);
         Expense expense = Console.createExpense();
         assertEquals(LocalDate.now(), expense.getDate());
     }
@@ -65,7 +66,7 @@ public class CRUD {
     @Test void shouldAddExpense(){
         inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         testScanner = new Scanner(inputStream);
-        Console.setScanner(testScanner);
+        InputReader.setScanner(testScanner);
         Main.setExpenseService(expenses);
         Main.addExpenseMain();
         assertEquals(1, expenses.getExpenses().size());
@@ -75,7 +76,7 @@ public class CRUD {
     void shouldCreateCorrectExpenseFromSimulatedInput() {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         Scanner testScanner = new Scanner(inputStream);
-        Console.setScanner(testScanner);
+        InputReader.setScanner(testScanner);
         Expense result = Console.createExpense();
         assertAll("Verifying expense",
                 () -> assertEquals("Paliwo", result.getName(), "Should have correct name"),
@@ -92,7 +93,7 @@ public class CRUD {
         String deleteInput = "\n" + "\n" + "\n" + "\n" + "\n" + "1\n";
         inputStream = new ByteArrayInputStream(deleteInput.getBytes());
         testScanner = new Scanner(inputStream);
-        Console.setScanner(testScanner);
+        InputReader.setScanner(testScanner);
         Main.deleteExpenseMain();
         assertEquals(0, expenses.getExpenses().size());
     }
@@ -103,7 +104,7 @@ public class CRUD {
         String updateInput = "\n" + "\n" + "\n" + "\n" + "\n" + "1\n" + "Rata za kredyt\n" +"PEAKO\n" + "\n" + "1700\n" + "2026-01-01\n" + "MORTGAGE\n" ;
         inputStream = new ByteArrayInputStream(updateInput.getBytes());
         testScanner = new Scanner(inputStream);
-        Console.setScanner(testScanner);
+        InputReader.setScanner(testScanner);
         Main.updateExpenseMain();
         Expense updatedExpense = expenses.getExpenses().get(0);
         assertAll("Verifying expense",
@@ -121,7 +122,7 @@ public class CRUD {
         expenses.addExpense(new Expense("Kino", "Multikino", "", 50, LocalDate.now(), ExpenseType.ENTERTAINMENT));
         String viewInput = "Paliwo\n" + "\n" + "\n" + "\n" + "\n";
         inputStream = new ByteArrayInputStream(viewInput.getBytes());
-        Console.setScanner(new Scanner(inputStream));
+        InputReader.setScanner(new Scanner(inputStream));
         List<Expense> resultList = Console.findListOfExpenses(expenses);
         assertAll("Verifying expenses list",
                 () -> assertNotNull(resultList, "List cannot be null"),
