@@ -1,12 +1,13 @@
 package expenseTracker;
 
-import expenseTracker.domain.Expense;
+import expenseTracker.domain.ExpenseType;
 import expenseTracker.logic.ExpenseHandler;
 import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
-import java.util.List;
+import expenseTracker.logic.ReportGenerator;
+import java.util.Map;
 import java.util.Scanner;
-import static expenseTracker.logic.ExpenseHandler.*;
+import static expenseTracker.logic.InputReader.getStringInput;
 
 
 public class Main {
@@ -52,7 +53,10 @@ public class Main {
                     expenseHandler.deleteExpense();
                     break;
                 case "5":
-
+                    Map<ExpenseType, Double> reportMap = expenseService.calculateExpensesByType(expenseHandler.findListOfExpensesByDates());
+                    String fileName = getStringInput("Provide report name");
+                    ReportGenerator generator = new ReportGenerator(fileName,reportMap);
+                    generator.generateReport();
                     break;
                 case "0":
                     System.out.println("Exit");
