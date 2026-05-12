@@ -40,4 +40,3 @@ The project is currently in its console-based phase, but the following enhanceme
 - **User Authentication:** Secure login for multiple users to track their individual expenses.
 
 ---
-*Created as part of the PBM / Personal Finance project.*
