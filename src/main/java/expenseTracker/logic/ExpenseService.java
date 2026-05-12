@@ -5,7 +5,9 @@ import expenseTracker.domain.ExpenseType;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExpenseService {
     private List<Expense> expenses;
@@ -33,6 +35,10 @@ public class ExpenseService {
         } return null;
     }
 
+    public List<Expense> getExpenses(){
+        return expenses;
+    }
+
     public boolean deleteExpense(String id){
         Expense expenseToDelete = getExpenseById(id);
         if(expenseToDelete == null){
@@ -53,13 +59,9 @@ public class ExpenseService {
         existingExpense.setDescription(updateData.getDescription());
         existingExpense.setDate(updateData.getDate());
         existingExpense.setExpenseType(updateData.getExpenseType());
-        existingExpense.setPrice(updateData.getPrice());
+        existingExpense.setCost(updateData.getCost());
         repository.saveExpenses(expenses);
         return true;
-    }
-
-    public List<Expense> getExpenses(){
-        return expenses;
     }
 
     public List<Expense> filterExpensesByName(List<Expense> inputList, String name){
@@ -121,6 +123,14 @@ public class ExpenseService {
         result = filterExpensesByDates(result,dateFrom,dateTo);
         result = filterExpenseByType(result,expenseType);
         return result;
+    }
+
+    public Map<ExpenseType, Double> calculateExpensesByType(List<Expense> expenses){
+        Map<ExpenseType, Double> calculated = new HashMap<>();
+        for (Expense expense : expenses) {
+            calculated.put(expense.getExpenseType(), calculated.getOrDefault(expense.getExpenseType(), 0.0) + expense.getCost());
+        }
+        return calculated;
     }
 }
 

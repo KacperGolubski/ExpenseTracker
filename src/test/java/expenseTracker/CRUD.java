@@ -80,7 +80,7 @@ public class CRUD {
         assertAll("Verifying expense",
                 () -> assertEquals("Paliwo", result.getName(), "Should have correct name"),
                 () -> assertEquals("Orlen", result.getShopName(), "Should have correct shop name"),
-                () -> assertEquals(250.50, result.getPrice(),"Should have correct price"),
+                () -> assertEquals(250.50, result.getCost(),"Should have correct price"),
                 () -> assertEquals(LocalDate.parse("2026-04-10"), result.getDate(), "Should have correct date"),
                 () -> assertEquals(ExpenseType.FUEL, result.getExpenseType(), "Should have correct expense Type")
         );
@@ -109,7 +109,7 @@ public class CRUD {
         assertAll("Verifying expense",
                 () -> assertEquals("Rata za kredyt", updatedExpense.getName(), "Should have correct name"),
                 () -> assertEquals("PEAKO", updatedExpense.getShopName(), "Should have correct shop name"),
-                () -> assertEquals(1700, updatedExpense.getPrice(),"Should have correct price"),
+                () -> assertEquals(1700, updatedExpense.getCost(),"Should have correct price"),
                 () -> assertEquals(LocalDate.parse("2026-01-01"), updatedExpense.getDate(), "Should have correct date"),
                 () -> assertEquals(ExpenseType.MORTGAGE, updatedExpense.getExpenseType(), "Should have correct expense Type")
         );

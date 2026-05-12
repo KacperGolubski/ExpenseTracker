@@ -9,19 +9,19 @@ public class Expense {
     private String name;
     private String shopName;
     private LocalDate date;
-    private double price;
+    private double cost;
     private String description = "";
     private ExpenseType expenseType;
 
-    public Expense(String name, String shopName, String description, double price, LocalDate date, ExpenseType expenseType) {
+    public Expense(String name, String shopName, String description, double cost, LocalDate date, ExpenseType expenseType) {
         validateName(name);
         validateName(shopName);
-        validatePrice(price);
+        validatePrice(cost);
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.shopName = shopName;
         this.description = description;
-        this.price = price;
+        this.cost = cost;
         if(date == null){
             this.date = LocalDate.now();
         } else this.date = date;
@@ -50,12 +50,12 @@ public class Expense {
     public void setDescription(String description) {
         this.description = description;
     }
-    public double getPrice() {
-        return price;
+    public double getCost() {
+        return cost;
     }
-    public void setPrice(double price) {
-        validatePrice(price);
-        this.price = price;
+    public void setCost(double cost) {
+        validatePrice(cost);
+        this.cost = cost;
     }
     public LocalDate getDate() {
         return date;
@@ -86,6 +86,8 @@ public class Expense {
             throw new IllegalArgumentException("Kwota musi być większa od 0");
         }
     }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,7 +95,7 @@ public class Expense {
 
         Expense expense = (Expense) o;
 
-        return Double.compare(expense.price, price) == 0 &&
+        return Double.compare(expense.cost, cost) == 0 &&
                 Objects.equals(id, expense.id) &&
                 Objects.equals(name, expense.name) &&
                 Objects.equals(shopName, expense.shopName) &&
@@ -104,7 +106,7 @@ public class Expense {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, shopName, description, price, date, expenseType);
+        return Objects.hash(id, name, shopName, description, cost, date, expenseType);
     }
     @Override
     public String toString() {
@@ -113,7 +115,7 @@ public class Expense {
                 name,
                 shopName,
                 description,
-                price,
+                cost,
                 expenseType);
     }
 

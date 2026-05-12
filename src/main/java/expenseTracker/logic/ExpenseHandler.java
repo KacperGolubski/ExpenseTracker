@@ -4,6 +4,7 @@ import expenseTracker.domain.Expense;
 import expenseTracker.domain.ExpenseType;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,6 +121,16 @@ public class ExpenseHandler {
         if(filteredExpenses.isEmpty()){
             System.out.println("No expense match the criteria");
             return null;
+        }
+        return filteredExpenses;
+    }
+
+    public List<Expense> findListOfExpensesByDates(){
+        LocalDate dateFrom = getLocalDateInput("Provide from date: ");
+        LocalDate dateTo = getLocalDateInput("Provide to date: ");
+        List <Expense> filteredExpenses = this.expenseService.filterExpensesByDates(this.expenseService.getExpenses(), dateFrom, dateTo);
+        if(filteredExpenses.isEmpty()){
+            System.out.println("No expense match the criteria");
         }
         return filteredExpenses;
     }

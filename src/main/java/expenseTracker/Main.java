@@ -1,10 +1,12 @@
 package expenseTracker;
 
 import expenseTracker.domain.Expense;
+import expenseTracker.domain.ExpenseType;
 import expenseTracker.logic.ExpenseHandler;
 import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import static expenseTracker.logic.ExpenseHandler.*;
 
@@ -30,7 +32,7 @@ public class Main {
             System.out.println("2. View expenses");
             System.out.println("3. Update expenses");
             System.out.println("4. Delete expenses");
-            System.out.println("5. Generate report");
+            System.out.println("5. Generate report to .csv");
             System.out.println("0. Exit program");
             System.out.println("Enter your choice: ");
             String choice = scanner.nextLine();
@@ -41,11 +43,11 @@ public class Main {
                     break;
                 case "2":
                    System.out.println("Provide expense details");
-                   List<Expense> list = findListOfExpenses(expenseService);
-                   if (list == null) {
+                   List<Expense> listToShow = findListOfExpenses(expenseService);
+                   if (listToShow == null) {
                        break;
                    }
-                   printExpenseMap(indexExpenses(list));
+                   printExpenseMap(indexExpenses(listToShow));
                     break;
                 case "3":
                     System.out.println("Update expense");
@@ -56,7 +58,7 @@ public class Main {
                     expenseHandler.deleteExpenseMain();
                     break;
                 case "5":
-                    System.out.println("Select type of report");
+
                     break;
                 case "0":
                     System.out.println("Exit");

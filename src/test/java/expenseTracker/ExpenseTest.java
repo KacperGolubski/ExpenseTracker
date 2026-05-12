@@ -1,18 +1,13 @@
 package expenseTracker;
 
 import expenseTracker.domain.ExpenseType;
-import expenseTracker.logic.ExpenseService;
-import expenseTracker.logic.FileExpenseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import expenseTracker.domain.Expense;
-import expenseTracker.domain.ExpenseType;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.IllegalFormatException;
 
 
 public class ExpenseTest {
@@ -74,8 +69,8 @@ public class ExpenseTest {
 
     @Test
     public void shouldSetCorrectPrice(){
-        TestExpense.setPrice(150);
-        assertEquals(150.0, TestExpense.getPrice());
+        TestExpense.setCost(150);
+        assertEquals(150.0, TestExpense.getCost());
     }
 
     @Test
