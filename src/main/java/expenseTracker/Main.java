@@ -4,12 +4,8 @@ import expenseTracker.domain.Expense;
 import expenseTracker.logic.ExpenseHandler;
 import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
-import expenseTracker.logic.Console;
-
 import java.util.List;
 import java.util.Scanner;
-
-import static expenseTracker.logic.Console.*;
 import static expenseTracker.logic.ExpenseHandler.*;
 
 

@@ -49,7 +49,7 @@ public class CRUD {
         inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        Expense expense = Console.createExpense();
+        Expense expense = ExpenseHandler.createExpense();
         assertNotNull(expense);
     }
 
@@ -58,7 +58,7 @@ public class CRUD {
         inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        Expense expense = Console.createExpense();
+        Expense expense = ExpenseHandler.createExpense();
         assertEquals(LocalDate.now(), expense.getDate());
     }
 
@@ -76,7 +76,7 @@ public class CRUD {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         Scanner testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        Expense result = Console.createExpense();
+        Expense result = ExpenseHandler.createExpense();
         assertAll("Verifying expense",
                 () -> assertEquals("Paliwo", result.getName(), "Should have correct name"),
                 () -> assertEquals("Orlen", result.getShopName(), "Should have correct shop name"),
@@ -122,7 +122,7 @@ public class CRUD {
         String viewInput = "Paliwo\n" + "\n" + "\n" + "\n" + "\n";
         inputStream = new ByteArrayInputStream(viewInput.getBytes());
         InputReader.setScanner(new Scanner(inputStream));
-        List<Expense> resultList = Console.findListOfExpenses(expenses);
+        List<Expense> resultList = ExpenseHandler.findListOfExpenses(expenses);
         assertAll("Verifying expenses list",
                 () -> assertNotNull(resultList, "List cannot be null"),
                 () -> assertEquals(1, resultList.size(), "Should find only one expense"),
