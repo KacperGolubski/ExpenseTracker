@@ -22,6 +22,7 @@ public class Main {
     public static void setExpenseService(ExpenseService testService) {
         expenseService = testService;
     }
+
     public static void main(String[] args) {
         boolean isRunnig = true;
         while (isRunnig) {
