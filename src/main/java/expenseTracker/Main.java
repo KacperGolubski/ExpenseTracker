@@ -1,12 +1,10 @@
 package expenseTracker;
 
 import expenseTracker.domain.Expense;
-import expenseTracker.domain.ExpenseType;
 import expenseTracker.logic.ExpenseHandler;
 import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import static expenseTracker.logic.ExpenseHandler.*;
 
@@ -39,23 +37,19 @@ public class Main {
             switch (choice) {
                 case "1":
                     System.out.println("Provide expense details");
-                    expenseHandler.addExpenseMain();
+                    expenseHandler.addExpense();
                     break;
                 case "2":
                    System.out.println("Provide expense details");
-                   List<Expense> listToShow = findListOfExpenses(expenseService);
-                   if (listToShow == null) {
-                       break;
-                   }
-                   printExpenseMap(indexExpenses(listToShow));
+                   expenseHandler.viewExpense();
                     break;
                 case "3":
                     System.out.println("Update expense");
-                    expenseHandler.updateExpenseMain();
+                    expenseHandler.updateExpense();
                     break;
                 case "4":
                     System.out.println("Delete expense");
-                    expenseHandler.deleteExpenseMain();
+                    expenseHandler.deleteExpense();
                     break;
                 case "5":
 

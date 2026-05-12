@@ -4,7 +4,6 @@ import expenseTracker.domain.Expense;
 import expenseTracker.domain.ExpenseType;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class ExpenseHandler {
         this.expenseService = expenseService;
     }
 
-    public void addExpenseMain(){
+    public void addExpense(){
         Expense expense = createExpense();
         if(expenseService.addExpense(expense)){
             System.out.println("Expense added successfully");
@@ -31,8 +30,16 @@ public class ExpenseHandler {
         }
     }
 
-    public void updateExpenseMain(){
-        Expense expenseToBeUpdated = findAndSelectExpense(expenseService);
+    public void viewExpense(){
+        List<Expense> listToShow = findListOfExpenses();
+        if (listToShow == null) {
+            return;
+        }
+        printExpenseMap(indexExpenses(listToShow));
+    }
+
+    public void updateExpense(){
+        Expense expenseToBeUpdated = findAndSelectExpense();
         if(expenseToBeUpdated == null){
             return;
         }
@@ -45,8 +52,8 @@ public class ExpenseHandler {
         }
     }
 
-    public void deleteExpenseMain(){
-        Expense expenseToBeDeleted = findAndSelectExpense(expenseService);
+    public void deleteExpense(){
+        Expense expenseToBeDeleted = findAndSelectExpense();
         if(expenseToBeDeleted == null){
             return;
         }
@@ -57,7 +64,7 @@ public class ExpenseHandler {
         }
     }
 
-    public static Expense createExpense(){
+    public Expense createExpense(){
         Expense expense = null;
         while(true){
             String name = getStringInput("Enter expense name: ");
@@ -91,9 +98,9 @@ public class ExpenseHandler {
         }
     }
 
-    public static Expense findAndSelectExpense(ExpenseService expenseService){
+    private Expense findAndSelectExpense(){
         Expense expense = null;
-        List<Expense> filteredExpenses = findListOfExpenses(expenseService);
+        List<Expense> filteredExpenses = findListOfExpenses();
         if(filteredExpenses == null){
             return null;
         }
@@ -111,13 +118,13 @@ public class ExpenseHandler {
         return expense;
     }
 
-    public static List<Expense> findListOfExpenses(ExpenseService expenseService){
+    public List<Expense> findListOfExpenses(){
         String name = getStringInput("Enter expense name: ");
         String shopName = getStringInput("Provide shop name: ");
         LocalDate dateFrom = getLocalDateInput("Provide from date: ");
         LocalDate dateTo = getLocalDateInput("Provide to date: ");
         ExpenseType expenseType = getExpenseTypeInput("Provide expense type: ");
-        List<Expense> filteredExpenses = expenseService.filterByNameShopNameDatesType(name, shopName, dateFrom, dateTo, expenseType);
+        List<Expense> filteredExpenses = this.expenseService.filterByNameShopNameDatesType(name, shopName, dateFrom, dateTo, expenseType);
         if(filteredExpenses.isEmpty()){
             System.out.println("No expense match the criteria");
             return null;

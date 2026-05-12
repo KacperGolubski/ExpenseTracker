@@ -45,12 +45,12 @@ public class CRUD {
     }
 
     @Test
-    public void shouldCreateExpense() {
+    public void shouldAddExpense() {
         inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        Expense expense = ExpenseHandler.createExpense();
-        assertNotNull(expense);
+        expenseHandler.addExpense();
+        assertEquals(1,expenses.getExpenses().size());
     }
 
     @Test void shouldCreateExpenseWithCurrentDate(){
@@ -58,17 +58,9 @@ public class CRUD {
         inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        Expense expense = ExpenseHandler.createExpense();
+        expenseHandler.addExpense();
+        Expense expense = expenses.getExpenses().get(0);
         assertEquals(LocalDate.now(), expense.getDate());
-    }
-
-    @Test void shouldAddExpense(){
-        inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
-        testScanner = new Scanner(inputStream);
-        InputReader.setScanner(testScanner);
-        Main.setExpenseService(expenses);
-        expenseHandler.addExpenseMain();
-        assertEquals(1, expenses.getExpenses().size());
     }
 
     @Test
@@ -76,8 +68,9 @@ public class CRUD {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         Scanner testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        Expense result = ExpenseHandler.createExpense();
-        assertAll("Verifying expense",
+        expenseHandler.addExpense();
+        Expense result = expenses.getExpenses().get(0);
+        assertAll("Veryfing expense",
                 () -> assertEquals("Paliwo", result.getName(), "Should have correct name"),
                 () -> assertEquals("Orlen", result.getShopName(), "Should have correct shop name"),
                 () -> assertEquals(250.50, result.getCost(),"Should have correct price"),
@@ -88,23 +81,21 @@ public class CRUD {
 
     @Test void shouldDeleteExpense(){
         expenses.addExpense(testExpense);
-        Main.setExpenseService(expenses);
         String deleteInput = "\n" + "\n" + "\n" + "\n" + "\n" + "1\n";
         inputStream = new ByteArrayInputStream(deleteInput.getBytes());
         testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        expenseHandler.deleteExpenseMain();
+        expenseHandler.deleteExpense();
         assertEquals(0, expenses.getExpenses().size());
     }
 
     @Test void shouldUpdateExpense(){
         expenses.addExpense(testExpense);
-        Main.setExpenseService(expenses);
         String updateInput = "\n" + "\n" + "\n" + "\n" + "\n" + "1\n" + "Rata za kredyt\n" +"PEAKO\n" + "\n" + "1700\n" + "2026-01-01\n" + "MORTGAGE\n" ;
         inputStream = new ByteArrayInputStream(updateInput.getBytes());
         testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        expenseHandler.updateExpenseMain();
+        expenseHandler.updateExpense();
         Expense updatedExpense = expenses.getExpenses().get(0);
         assertAll("Verifying expense",
                 () -> assertEquals("Rata za kredyt", updatedExpense.getName(), "Should have correct name"),
@@ -119,10 +110,7 @@ public class CRUD {
     void shouldReturnFilteredExpenses(){
         expenses.addExpense(testExpense);
         expenses.addExpense(new Expense("Kino", "Multikino", "", 50, LocalDate.now(), ExpenseType.ENTERTAINMENT));
-        String viewInput = "Paliwo\n" + "\n" + "\n" + "\n" + "\n";
-        inputStream = new ByteArrayInputStream(viewInput.getBytes());
-        InputReader.setScanner(new Scanner(inputStream));
-        List<Expense> resultList = ExpenseHandler.findListOfExpenses(expenses);
+        List<Expense> resultList = expenses.filterByNameShopNameDatesType("Paliwo", "", null, null, null);
         assertAll("Verifying expenses list",
                 () -> assertNotNull(resultList, "List cannot be null"),
                 () -> assertEquals(1, resultList.size(), "Should find only one expense"),
