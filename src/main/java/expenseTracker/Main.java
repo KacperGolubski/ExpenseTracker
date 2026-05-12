@@ -53,10 +53,7 @@ public class Main {
                     expenseHandler.deleteExpense();
                     break;
                 case "5":
-                    Map<ExpenseType, Double> reportMap = expenseService.calculateExpensesByType(expenseHandler.findListOfExpensesByDates());
-                    String fileName = getStringInput("Provide report name");
-                    ReportGenerator generator = new ReportGenerator(fileName,reportMap);
-                    generator.generateReport();
+                    expenseHandler.generateReport();
                     break;
                 case "0":
                     System.out.println("Exit");

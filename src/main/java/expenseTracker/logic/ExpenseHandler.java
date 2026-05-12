@@ -118,7 +118,7 @@ public class ExpenseHandler {
         return expense;
     }
 
-    public List<Expense> findListOfExpenses(){
+    private List<Expense> findListOfExpenses(){
         String name = getStringInput("Enter expense name: ");
         String shopName = getStringInput("Provide shop name: ");
         LocalDate dateFrom = getLocalDateInput("Provide from date: ");
@@ -132,7 +132,7 @@ public class ExpenseHandler {
         return filteredExpenses;
     }
 
-    public List<Expense> findListOfExpensesByDates(){
+    private List<Expense> findListOfExpensesByDates(){
         LocalDate dateFrom = getLocalDateInput("Provide from date: ");
         LocalDate dateTo = getLocalDateInput("Provide to date: ");
         List <Expense> filteredExpenses = this.expenseService.filterExpensesByDates(this.expenseService.getExpenses(), dateFrom, dateTo);
@@ -141,5 +141,18 @@ public class ExpenseHandler {
         }
         return filteredExpenses;
     }
+
+    public void generateReport() {
+        List<Expense> expensesForReport = findListOfExpensesByDates();
+        if (expensesForReport == null || expensesForReport.isEmpty()) {
+            return;
+        }
+        Map<ExpenseType, Double> reportMap = this.expenseService.calculateExpensesByType(expensesForReport);
+        String fileName = getStringInput("Provide report name: ");
+        ReportGenerator generator = new ReportGenerator(fileName, reportMap);
+        generator.generateReport();
+        System.out.println("Report successfully saved as " + fileName + ".csv");
+    }
+
 
 }
