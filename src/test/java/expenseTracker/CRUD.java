@@ -1,9 +1,6 @@
 package expenseTracker;
 import expenseTracker.domain.ExpenseType;
-import expenseTracker.logic.Console;
-import expenseTracker.logic.ExpenseService;
-import expenseTracker.logic.FileExpenseRepository;
-import expenseTracker.logic.InputReader;
+import expenseTracker.logic.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,11 +23,13 @@ public class CRUD {
     private String simulatedInput;
     private ByteArrayInputStream inputStream;
     private Scanner testScanner;
+    private ExpenseHandler expenseHandler;
 
     @BeforeEach
     public void setUp() {
         fileRepository = new FileExpenseRepository("test_expenses.json");
         expenses = new ExpenseService(fileRepository);
+        expenseHandler = new ExpenseHandler(expenses);
         testExpense = new Expense("Paliwo", "BP", "Cena za litr 5.19zł", 200, LocalDate.parse("2026-04-20"), ExpenseType.FUEL);
         simulatedInput = "Paliwo\n" + "Orlen\n" + "Do pełna\n" + "250.50\n" + "2026-04-10\n" + "FUEL\n";
 
@@ -68,7 +67,7 @@ public class CRUD {
         testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
         Main.setExpenseService(expenses);
-        Main.addExpenseMain();
+        expenseHandler.addExpenseMain();
         assertEquals(1, expenses.getExpenses().size());
     }
 
@@ -94,7 +93,7 @@ public class CRUD {
         inputStream = new ByteArrayInputStream(deleteInput.getBytes());
         testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        Main.deleteExpenseMain();
+        expenseHandler.deleteExpenseMain();
         assertEquals(0, expenses.getExpenses().size());
     }
 
@@ -105,7 +104,7 @@ public class CRUD {
         inputStream = new ByteArrayInputStream(updateInput.getBytes());
         testScanner = new Scanner(inputStream);
         InputReader.setScanner(testScanner);
-        Main.updateExpenseMain();
+        expenseHandler.updateExpenseMain();
         Expense updatedExpense = expenses.getExpenses().get(0);
         assertAll("Verifying expense",
                 () -> assertEquals("Rata za kredyt", updatedExpense.getName(), "Should have correct name"),

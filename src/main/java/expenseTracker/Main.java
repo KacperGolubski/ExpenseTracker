@@ -1,6 +1,7 @@
 package expenseTracker;
 
 import expenseTracker.domain.Expense;
+import expenseTracker.logic.ExpenseHandler;
 import expenseTracker.logic.ExpenseService;
 import expenseTracker.logic.FileExpenseRepository;
 import expenseTracker.logic.Console;
@@ -9,11 +10,13 @@ import java.util.List;
 import java.util.Scanner;
 
 import static expenseTracker.logic.Console.*;
+import static expenseTracker.logic.ExpenseHandler.*;
 
 
 public class Main {
     static FileExpenseRepository fileRepository = new FileExpenseRepository("expenses.json");
     static ExpenseService expenseService = new ExpenseService(fileRepository);
+    static ExpenseHandler expenseHandler = new ExpenseHandler(expenseService);
     static Scanner scanner = new Scanner(System.in);
     public static void setScanner(Scanner testScanner) {
         scanner = testScanner;
@@ -38,7 +41,7 @@ public class Main {
             switch (choice) {
                 case "1":
                     System.out.println("Provide expense details");
-                    addExpenseMain();
+                    expenseHandler.addExpenseMain();
                     break;
                 case "2":
                    System.out.println("Provide expense details");
@@ -50,11 +53,11 @@ public class Main {
                     break;
                 case "3":
                     System.out.println("Update expense");
-                    updateExpenseMain();
+                    expenseHandler.updateExpenseMain();
                     break;
                 case "4":
                     System.out.println("Delete expense");
-                    deleteExpenseMain();
+                    expenseHandler.deleteExpenseMain();
                     break;
                 case "5":
                     System.out.println("Select type of report");
@@ -68,48 +71,4 @@ public class Main {
             }
         } scanner.close();
     }
-
-    public static void addExpenseMain(){
-        Expense expense = Console.createExpense();
-        if(expenseService.addExpense(expense)){
-            System.out.println("Expense added successfully");
-            return;
-        } else  {
-            System.out.println("Expense could not be added");
-            return;
-        }
-    }
-
-    public static void updateExpenseMain(){
-
-        Expense expenseToBeUpdated = Console.findAndSelectExpense(expenseService);
-        if(expenseToBeUpdated == null){
-            return;
-        }
-        System.out.println("Now provide new details for this expense");
-        Expense expenseUpdate = createExpense();
-        if(expenseService.updateExpense(expenseToBeUpdated.getId(),  expenseUpdate)){
-            System.out.println("Expense updated successfully");
-        } else  {
-            System.out.println("Expense could not be updated");
-        }
-    }
-
-    public static void deleteExpenseMain(){
-        Expense expenseToBeDeleted = Console.findAndSelectExpense(expenseService);
-        if(expenseToBeDeleted == null){
-            return;
-        }
-        if(expenseService.deleteExpense(expenseToBeDeleted.getId())){
-            System.out.println("Expense deleted successfully");
-        } else  {
-            System.out.println("Expense could not be deleted");
-        }
-    }
-
-
-
-
-
-
 }
