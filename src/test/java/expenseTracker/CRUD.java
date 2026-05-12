@@ -123,7 +123,6 @@ public class CRUD {
         inputStream = new ByteArrayInputStream(viewInput.getBytes());
         Console.setScanner(new Scanner(inputStream));
         List<Expense> resultList = Console.findListOfExpenses(expenses);
-        System.out.println(resultList);
         assertAll("Verifying expenses list",
                 () -> assertNotNull(resultList, "List cannot be null"),
                 () -> assertEquals(1, resultList.size(), "Should find only one expense"),
