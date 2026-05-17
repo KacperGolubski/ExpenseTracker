@@ -110,11 +110,15 @@ public class Expense {
     }
     @Override
     public String toString() {
+        String displayDescription = description;
+        if(displayDescription == null){
+            displayDescription = "no description";
+        }
         return String.format("%s | %-15s | %-15s | %-30s | %8.2f | [%s]",
                 date,
                 name,
                 shopName,
-                description,
+                displayDescription,
                 cost,
                 expenseType);
     }
